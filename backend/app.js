@@ -13,7 +13,7 @@ const orders = require("./routes/order");
 // Db connect
 connectDatabase();
 
-app.use(express.json)();
+app.use(express.json());
 app.use("/api/v1/", products);
 app.use("/api/v1/", orders);
 

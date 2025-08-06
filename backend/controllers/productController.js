@@ -5,12 +5,12 @@ exports.getProducts = async (req, res, next) => {
   try {
     const products = await productModel.find({});
     res.json({
-      sucess: true,
+      success: true,
       products,
     });
   } catch (error) {
     res
-      .status(404)
+      .status(500)
       .json({ success: false, message: "Error fetching products" });
   }
 };
@@ -19,14 +19,20 @@ exports.getProducts = async (req, res, next) => {
 exports.getSingleProduct = async (req, res, next) => {
   try {
     const singleProduct = await productModel.findById(req.params.id);
+    if (!singleProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found with that ID",
+      });
+    }
     res.json({
       success: true,
       singleProduct,
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
-      message: "Unable to get product with that ID",
+      message: "Error retrieving product",
     });
   }
 };
