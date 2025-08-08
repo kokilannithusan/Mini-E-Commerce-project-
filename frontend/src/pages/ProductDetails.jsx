@@ -12,6 +12,14 @@ export default function ProductDetails() {
       .catch((err) => console.error("Error fetching products:", err));
   }, []);
 
+  if (!product) {
+    return (
+      <div className="container text-center mt-5">
+        <h4>Loading product details...</h4>
+      </div>
+    );
+  }
+
   return (
     <Fragment>
       <div className="container container-fluid">
@@ -26,18 +34,21 @@ export default function ProductDetails() {
           </div>
 
           <div className="col-12 col-lg-5 mt-5">
-            <h3>Dell Inspiron 3511 Laptop, Intel i3-1115G4, 8GB, 512GB</h3>
-            <p id="product_id">Product # 387874kkfjkf</p>
+            <h3>{product.name}</h3>
+            <p id="product_id">Product #{product._id}</p>
 
             <hr />
 
             <div className="rating-outer">
-              <div className="rating-inner"></div>
+              <div
+                className="rating-inner"
+                style={{ width: `${(product.ratings / 5) * 100}%` }}
+              ></div>
             </div>
 
             <hr />
 
-            <p id="product_price">$456.00</p>
+            <p id="product_price">${product.price}</p>
             <div className="stockCounter d-inline">
               <span className="btn btn-danger minus">-</span>
 
@@ -61,21 +72,22 @@ export default function ProductDetails() {
             <hr />
 
             <p>
-              Status: <span id="stock_status">In Stock</span>
+              Status:{" "}
+              <span
+                id="stock_status"
+                className={product.stock > 0 ? "text-success" : "text-danger"}
+              >
+                {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              </span>
             </p>
 
             <hr />
 
             <h4 className="mt-2">Description:</h4>
-            <p>
-              Processor: Intel i5-1235U (3.30 GHz up to 4.40 GHz), 10 Cores &
-              12MB Cache RAM & Storage: 8GB, 8Gx1, DDR4, 2666MHz Ach & 512GB SSD
-              Display & Graphics: 15.6" FHD WVA AG 120Hz 250 nits Narrow Border
-              & Integrated Graphics
-            </p>
+            <p>{product.description}</p>
             <hr />
             <p id="product_seller mb-3">
-              Sold by: <strong>Amazon</strong>
+              Sold by: <strong>{product.seller}</strong>
             </p>
 
             <div className="rating w-50"></div>
